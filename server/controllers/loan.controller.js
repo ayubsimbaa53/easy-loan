@@ -6,10 +6,11 @@ const { getWithPercentage } = require('../services/percentageService');
  * ---- Make Loan Request ----
  * @param {*} req 
  * @param {*} res 
- * @param {*} _next 
  */
 const loanRequest = function (req, res) {
     const loan = new Loan(req.body);
+
+    console.log('The Loan Request ');
 
     loan.save((err, result) => {
         if (err) return res.status(400).json({ error: err.message });

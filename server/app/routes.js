@@ -8,14 +8,14 @@ const UserRoutes = require('../routes/user');
 const auth = require('../middleware/auth');
 
 // Address Of API v1..
-const API_V1 = "/api/v1";
+const API_ENDPOINT = "/api/v1";
 
 // Use Ticket Routes..
 // router.use('/api/v1/tickets', require('../routes/ticketRoutes'));
-router.use(`${API_V1}/loan`, auth, LoanRoutes);
-router.use(`${API_V1}/company`, auth, CompanyRoutes);
-router.use(`${API_V1}/auth`, AuthRoutes);
-router.use(`${API_V1}/user`, auth, UserRoutes);
+router.use(`${API_ENDPOINT}/loan`, auth, LoanRoutes);
+router.use(`${API_ENDPOINT}/company`, auth, CompanyRoutes);
+router.use(`${API_ENDPOINT}/auth`, AuthRoutes);
+router.use(`${API_ENDPOINT}/user`, auth, UserRoutes);
 
 
 router.get('/health', (_req, res) => {
