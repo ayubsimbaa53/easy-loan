@@ -16,7 +16,7 @@ const config = {
     },
     default: {
         SECRET: 'SUPERSECRET',
-        MONGO_URI: 'mongodb://localhost:27017/test',
+        MONGO_URI: 'mongodb://localhost:27017/loan',
         HOST: 'localhost',
         PORT: 8080
     }
