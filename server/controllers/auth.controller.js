@@ -93,24 +93,8 @@ const forgotPassword = (_req, res) => {
     res.status(200).send('Route for forgot password!');
 };
 
-/**
- * ---- User Logout ----
- * @param {*} req 
- * @param {*} res 
- */
-const logout = function (req, res) {
-    req.user.deleteToken(function (err) {
-        if (err) return res.status(400).send(err);
-        res.status(200).json({
-            isAuth: false,
-            message: 'Logged-Out, session deleted!'
-        });
-    });
-};
-
 module.exports = {
     login,
     register,
     forgotPassword,
-    logout
 };

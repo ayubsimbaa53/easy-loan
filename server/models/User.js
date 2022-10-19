@@ -87,6 +87,8 @@ userSchema.statics.findByToken = async function (token, cb) {
 userSchema.methods.deleteToken = function (cb) {
     var user = this;
 
+    // console.log("---- I am Schema Method Of Delete Token Here ----");
+
     // Make Update To Remove The Token From User Doc..
     user.updateOne({ $unset: { token: 1 } }, function (err) {
         if (err) return cb(err);
