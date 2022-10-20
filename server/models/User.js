@@ -27,17 +27,20 @@ userSchema.pre('save', async function (next) {
     var user = this;
 
     if (user.isModified('password')) {
-        // Make Salt..
-        const salt = await bcrypt.genSalt(SALT_I);
-        if (!salt) return next({ message: 'Failed To Generate Salt!' });
+        try {
+            // Make Salt..
+            const salt = await bcrypt.genSalt(SALT_I);
 
-        // Make Hash The Password..
-        const hash = await bcrypt.hash(user.password, salt);
-        if (!hash) return next({ message: 'Failed To Hashing Password!' });
+            // Make Hash The Password..
+            const hash = await bcrypt.hash(user.password, salt);
 
-        // Restore / Update Existing password to Hash..
-        user.password = hash;
-        next();
+            // Restore / Update Existing password to Hash..
+            user.password = hash;
+            next();
+
+        } catch (error) {
+            next(error);
+        }
 
     } else {
         next();
@@ -49,10 +52,14 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.comparePassword = async function (candidatePassword, cb) {
     var user = this;
 
-    // Comparing Password..
-    const matchedPassword = await bcrypt.compare(candidatePassword, user.password);
-    if (!matchedPassword) return cb({ message: "Wrong Password!" });
-    cb(null, matchedPassword);
+    try {
+        // Comparing Password..
+        const matchedPassword = await bcrypt.compare(candidatePassword, user.password);
+        cb(null, matchedPassword);
+
+    } catch (error) {
+        cb(error)
+    }
 };
 
 // Schema Method to Generate token for cookie when user login..
@@ -72,14 +79,17 @@ userSchema.methods.ganarateToken = function (cb) {
 userSchema.statics.findByToken = async function (token, cb) {
     var user = this;
 
-    // Decode Token For ID..
-    const decodeToken = await JWT.verify(token, config.SECRET);
-    if (!decodeToken) return cb({ message: "Failed To Decode The Password!" });
+    try {
+        // Decode Token For ID..
+        const decodeToken = JWT.verify(token, config.SECRET);
 
-    // Find User By Decoded Token ID..
-    const findUser = user.findOne({ _id: decodeToken, token: token });
-    if (!findUser) return cb({ message: "User Not Found With This Token!" });
-    cb(null, findUser);
+        // Find User By Decoded Token ID..
+        const findUser = await user.findOne({ _id: decodeToken, token: token });
+        cb(null, findUser);
+
+    } catch (error) {
+        cb(error);
+    }
 };
 
 

@@ -16,9 +16,3 @@ const auth = function (req, res, next) {
 }
 
 module.exports = auth;
-
-// another way for creating middleware function and export it as module..
-// module.exports = function(req, res, next){
-//     console.log('I am Auth Middleware!');
-//     next();
-// }

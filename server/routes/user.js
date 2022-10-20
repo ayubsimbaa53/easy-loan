@@ -1,6 +1,10 @@
 const router = require('express').Router();
-const { logout, deleteAccount } = require('../controllers/user.controller');
+const { logout, deleteAccount, getUserLoans } = require('../controllers/user.controller');
 
+/**
+ * ----- Getting User Loans -----
+ */
+router.get('/user_loans', getUserLoans);
 
 /**
  * ---- Delete User Account ----
