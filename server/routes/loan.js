@@ -1,5 +1,10 @@
 const router = require('express').Router();
-const { loanRequest, loanAcceptance, allLoans } = require('../controllers/loan.controller');
+const { loanRequest, loanAcceptance, allLoans, checkLoanStatus } = require('../controllers/loan.controller');
+
+/**
+ * ---- Check Loan Status -----
+ */
+router.get('/status', checkLoanStatus);
 
 /**
  * ---- Loan Request ----

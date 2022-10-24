@@ -12,7 +12,8 @@ const loanSchema = mongoose.Schema({
     status: { type: String, default: 'NULL', enum: ['NULL', 'RUNNING', 'FINISHED'] },
     payDuration: { type: Number, required: false, default: 6 },
     requestedTo: { type: String, required: false },
-    nextPayDate: { type: Number, default: 1 },
+    nextPayDate: { type: String },
+    nextPayRound: { type: Number, default: 1 },
     payPerMonth: { type: Number },
     expiredDate: { type: String },
 }, {

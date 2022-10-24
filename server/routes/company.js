@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { makeCompany, loanAcceptance } = require('../controllers/company.controller');
+const { makeCompany, getLoansOfCompany } = require('../controllers/company.controller');
 
 /**
  * ---- Make Company ----
@@ -7,8 +7,8 @@ const { makeCompany, loanAcceptance } = require('../controllers/company.controll
 router.post('/make', makeCompany);
 
 /**
- * ---- Loan Accpetance ----
+ * ---- Get Company Loans ----
  */
-router.post('/acceptance', loanAcceptance);
+router.get('/company_loans', getLoansOfCompany);
 
 module.exports = router;

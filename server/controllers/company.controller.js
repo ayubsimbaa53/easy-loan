@@ -1,5 +1,5 @@
 const Company = require('../models/Company');
-const Loan = require('../models/Loan');
+const { getLoansByCompanyId } = require('../services/loanService');
 
 /**
  * ---- Make Company ----
@@ -16,16 +16,24 @@ const makeCompany = (req, res) => {
 };
 
 /**
- * ------ Accepting Loan By Company ------
+ * ---- Get Company Loans ----
  * @param {*} req 
  * @param {*} res 
  */
-const loanAcceptance = (req, res) => {
-    // loan acceptance...
-    
+const getLoansOfCompany = async (req, res) => {
+    const { companyId } = req.query;
+
+    try {
+        const companyLoans = await getLoansByCompanyId(companyId);
+        if (!companyLoans.length) throw new Error("No Loans Here!");
+        res.status(200).json({ success: true, loans: companyLoans });
+
+    } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+    }
 };
 
 module.exports = {
     makeCompany,
-    loanAcceptance
+    getLoansOfCompany
 };

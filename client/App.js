@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StyleSheet, Text, View } from 'react-native';
 
 import OnboardingScreen from './screens/onboarding/Onboarding';
 import SplashScreen from './screens/splash/Splash';
@@ -10,7 +9,10 @@ import RegisterScreen from './screens/authentication/Register';
 import RegisterScreen2 from './screens/authentication/Register2';
 import RegisterScreen3 from './screens/authentication/Register3';
 import UploadProfile from './screens/authentication/UploadProfile';
+import MainTabs from './screens/MainTabs';
+import RequestDone from './screens/loanRequest/RequestDone';
 
+// Stack Navigation..
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -84,16 +86,22 @@ export default function App() {
           }}
         />
 
+        {/* ---- Main Screens Stack Of Tab Navigation ---- */}
+        <Stack.Screen
+          name="MainTabs"
+          component={MainTabs}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        {/* ---- Request Done ----- */}
+        <Stack.Screen
+          name="RequestDone"
+          component={RequestDone}
+        />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  //   backgroundColor: '#fff',
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  // },
-});

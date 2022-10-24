@@ -1,10 +1,44 @@
 const Loan = require('../models/Loan');
 const { getCompanyById } = require("../services/companyService");
-// const { getUserById } = require("../services/userService");
+const { updateBalance } = require("../services/userService");
 const { getWithPercentage } = require('../services/percentageService');
 const { getMinutesFromNow, getMonthFromNow } = require('../services/getTimesService');
 const { getFormatedDate, getFormatedTime } = require('../services/dateFormatService');
+const { addMinutes, isAfter, addMonths } = require('date-fns');
 
+
+/**
+ * ----- Checking the Loan Status -----
+ * @param {*} req 
+ * @param {*} res 
+ */
+const checkLoanStatus = async function (req, res) {
+    const { loanId } = req.query;
+    const { _id: userId } = req.user;
+
+    try {
+        const loan = await Loan.findOne({ _id: loanId, userId, status: 'RUNNING' });
+
+        const started = addMonths(new Date(loan.createdAt), loan.payDuration);
+        const isTimeOver = isAfter(new Date(), started);
+
+        if (isTimeOver){
+            loan.status = 'FINISHED';
+        }
+        await loan.save();
+        
+        res.status(200).json({
+            success: true,
+            loan
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
 
 /**
  * ----- Make Dispatching the Loan ----
@@ -12,8 +46,8 @@ const { getFormatedDate, getFormatedTime } = require('../services/dateFormatServ
  * @param {*} res 
  */
 const payLoan = function (req, res) {
-    res.send("Please say Your Loan");
-};  
+    
+};
 
 
 /**
@@ -53,6 +87,9 @@ const loanAcceptance = async function (req, res) {
                 const sumWithPercentageAmount = amounts + percentageAmount;
                 loan.amounts = sumWithPercentageAmount;
 
+                // Update the User Balance With Loan..
+                updateBalance(loan.userId, sumWithPercentageAmount);
+
                 // Update something else..
                 loan.request = "ACCEPTED";
                 loan.status = "RUNNING";
@@ -60,20 +97,14 @@ const loanAcceptance = async function (req, res) {
                 // Let gets Minutes from now when acceptance is okay..
                 const payDuration = loan.payDuration;
                 const haveToPayIn = getMonthFromNow(payDuration);
-                const formatedDate = getFormatedDate(haveToPayIn);
-                loan.expiredDate = formatedDate;
+                const formatedHaveToPayIn = getFormatedDate(haveToPayIn);
+                loan.expiredDate = formatedHaveToPayIn;
 
-                // Testing with Minutes here..
-                const haveToPayIn2 = getMinutesFromNow(1);
-                const formatTime = getFormatedTime(haveToPayIn2);
-                console.log(formatTime);
-                const thisTime = new Date().getMinutes();
-
-                console.log('target -- ', formatTime, ' Current -- ', thisTime);
-
-                if (thisTime >= 5) {
-                    console.log('Finised Time');
-                }
+                // Let's Working On NextPay Month Date..
+                const nextPay = loan.nextPayRound;
+                const haveToPayNextIn = getMonthFromNow(nextPay);
+                const formatedHaveToPayNextIn = getFormatedDate(haveToPayNextIn);
+                loan.nextPayDate = formatedHaveToPayNextIn;
 
                 // Pay To Next Month..
                 /**
@@ -125,12 +156,9 @@ const loanAcceptance = async function (req, res) {
  * @param {*} res 
  */
 const allLoans = async function (_req, res) {
-
-    console.log('Lets see the user -- ', _req.user);
-
     try {
-        const loans = await Loan.find({});
-        if (!loans) throw new Error("Loans not found");
+        const loans = await Loan.find({}).sort({createdAt: -1});
+        if (!loans.length) throw new Error("Loans not found");
         res.status(200).json({
             success: true,
             loans
@@ -142,6 +170,7 @@ const allLoans = async function (_req, res) {
 };
 
 module.exports = {
+    checkLoanStatus,
     payLoan,
     loanRequest,
     loanAcceptance,
