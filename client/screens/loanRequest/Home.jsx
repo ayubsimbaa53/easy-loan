@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import InputField from '../../components/widgets/InputField';
 import { Button } from '../../components/widgets/Button';
+import Header from '../../components/Header/Header';
 
 const Home = ({ navigation }) => {
     const [data, setData] = useState({
@@ -21,9 +23,8 @@ const Home = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.headerText}>Make Loan Request</Text>
-            </View>
+            <StatusBar style="light" />
+            <Header>Make Loan Request</Header>
 
             <View style={styles.body}>
                 <InputField
@@ -36,7 +37,6 @@ const Home = ({ navigation }) => {
                 <InputField
                     label={"Company"}
                     placeholder={"BD Task"}
-                    keyboardType={"numeric"}
                     onChangeText={() => handleChange()}
                 />
 
@@ -58,9 +58,9 @@ const Home = ({ navigation }) => {
                 <View style={styles.buttonContainer}>
                     <Button
                         title="Submit Request"
-                        color1st="orange"
-                        color2nd="red"
-                        size={20}
+                        color1st="lightblue"
+                        color2nd="royalblue"
+                        size={18}
                         textColor="white"
                         width="100%"
                         height={50}

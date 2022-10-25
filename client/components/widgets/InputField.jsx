@@ -18,13 +18,13 @@ const InputField = ({ label, placeholder, keyboardType, onChangeText }) => {
 
 const styles = StyleSheet.create({
     text: {
-        fontSize: 20,
+        fontSize: 15,
         paddingLeft: 10,
         paddingTop: 10,
         textTransform: "capitalize"
     },
     input: {
-        fontSize: 25,
+        fontSize: 20,
         padding: 10,
         backgroundColor: 'lightgray',
         margin: 10,

@@ -14,7 +14,7 @@ const MainTabs = () => {
     return (
         <Tab.Navigator
             initialRouteName="HomeScreen"
-            activeColor="white"
+            activeColor="gray"
         >
             <Tab.Screen
                 name="HomeScreen"

@@ -10,7 +10,10 @@ import RegisterScreen2 from './screens/authentication/Register2';
 import RegisterScreen3 from './screens/authentication/Register3';
 import UploadProfile from './screens/authentication/UploadProfile';
 import MainTabs from './screens/MainTabs';
-import RequestDone from './screens/loanRequest/RequestDone';
+import RequestDoneScreen from './screens/loanRequest/RequestDone';
+import LoanDetailsScreen from './screens/loanDetails/LoanDetails';
+import DispatchLoanScreen from './screens/dispatchLoan/DispatchLoan';
+import DispatchDoneScreen from './screens/dispatchLoan/DispatchDone';
 
 // Stack Navigation..
 const Stack = createNativeStackNavigator();
@@ -20,7 +23,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator
         useLagacyImplementation={true}
-        initialRouteName="Onboarding"
+        initialRouteName="MainTabs"
       >
 
         {/* ---- OnBoarding Screen ---- */}
@@ -33,7 +36,7 @@ export default function App() {
         />
 
         {/* ---- Splash Screen ---- */}
-        <Stack.Screen 
+        <Stack.Screen
           name="Splash"
           component={SplashScreen}
           options={{
@@ -98,7 +101,55 @@ export default function App() {
         {/* ---- Request Done ----- */}
         <Stack.Screen
           name="RequestDone"
-          component={RequestDone}
+          component={RequestDoneScreen}
+          options={{
+            // headerTitle: "",
+            headerShown: false
+          }}
+        />
+
+        {/* ---- Loan Details Screen ----- */}
+        <Stack.Screen
+          name="LoanDetails"
+          component={LoanDetailsScreen}
+          options={{
+            headerTitle: "Loan Details",
+            headerStyle: {
+              backgroundColor: 'gray'
+            },
+            headerTintColor: 'white',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 20
+            }
+          }}
+        />
+
+        {/* ---- Dispatch Loan Screen ----- */}
+        <Stack.Screen
+          name="DispatchLoan"
+          component={DispatchLoanScreen}
+          options={{
+            headerTitle: "Dispatch Your Loan",
+            headerStyle: {
+              backgroundColor: 'gray'
+            },
+            headerTintColor: 'white',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 20
+            }
+          }}
+        />
+
+        {/* ---- Request Done ----- */}
+        <Stack.Screen
+          name="DispatchDone"
+          component={DispatchDoneScreen}
+          options={{
+            // headerTitle: "",
+            headerShown: false
+          }}
         />
 
       </Stack.Navigator>
